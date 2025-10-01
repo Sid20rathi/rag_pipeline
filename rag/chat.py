@@ -18,7 +18,7 @@ embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-b
 
 # FIXED: Correct parameter order
 vector_db = QdrantVectorStore.from_existing_collection(
-    embedding=embeddings,  # Named parameter
+    embedding=embeddings,  
     collection_name="my",  
     url=qdrant_url,
     api_key=qdrant_api,

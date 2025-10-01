@@ -12,7 +12,7 @@ load_dotenv()
 
 google_api = os.getenv("GOOGLE_API_KEY")
 
-# Check if API key is loaded
+
 if not google_api:
     print("❌ GOOGLE_API_KEY not found in environment variables")
     exit(1)
@@ -37,7 +37,7 @@ try:
     search_results = vector_db.similarity_search(user_query, k=3)  # Added k parameter
     print(f"✅ Found {len(search_results)} relevant documents")
     
-    # FIX: Corrected the typo from 'metadta' to 'metadata'
+    
     context = "\n\n".join([
         f"Page Content: {result.page_content}\nPage Number: {result.metadata.get('page', 'N/A')}\nFile Location: {result.metadata.get('source', 'N/A')}" 
         for result in search_results
@@ -62,15 +62,15 @@ Instructions:
 """
 
 try:
-    # FIX: Use the actual API key variable, not a string
+   
     client = OpenAI(
-        api_key=google_api,  # This should be your Google API key
+        api_key=google_api,  
         base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
     )
 
-    # FIX: Use correct model name - gemini-2.0-flash-exp or gemini-1.5-flash
+    
     response = client.chat.completions.create(
-        model="gemini-1.5-flash",  # Updated model name
+        model="gemini-1.5-flash", 
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {
