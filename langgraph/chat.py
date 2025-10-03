@@ -10,14 +10,17 @@ load_dotenv()
 
 llm = init_chat_model("google_genai:gemini-2.0-flash", api_key=os.getenv("GOOGLE_API_KEY"))
 
-# State should use "messages" (plural)
+
 class State(TypedDict):
     messages: Annotated[list, add_messages]
 
 def chatbot(state: State):
-    # Invoke the LLM with the conversation history
+    
     response = llm.invoke(state["messages"])
-    # Append the assistant's response to the conversation
+    print("*"*30)
+    print(response)
+    print("*"*30)
+    
     return {"messages": [response]}
 
 # Build the graph
@@ -36,7 +39,7 @@ def stream_graph_updates(user_input: str):
 # Chat loop
 while True:
     try:
-        user_input = input("User: ")
+        user_input = input("\n\n User: ")
         if user_input.lower() in ["quit", "exit", "q"]:
             print("Goodbye!")
             break
