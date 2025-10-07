@@ -23,18 +23,18 @@ def chatbot(state: State):
     
     return {"messages": [response]}
 
-# Build the graph
+
 graph_builder = StateGraph(State)
 graph_builder.add_node("chatbot", chatbot)
 graph_builder.add_edge(START, "chatbot")
 graph_builder.add_edge("chatbot", END)
 graph = graph_builder.compile()
 
-# Streaming function
 def stream_graph_updates(user_input: str):
     for event in graph.stream({"messages": [{"role": "user", "content": user_input}]}):
         for value in event.values():
             print("Assistant:", value["messages"][-1].content)
+
 
 # Chat loop
 while True:
@@ -44,6 +44,7 @@ while True:
             print("Goodbye!")
             break
         stream_graph_updates(user_input)
+        print("It is working....")
     except:
         user_input = "What do you know about LangGraph?"
         print("User: " + user_input)
