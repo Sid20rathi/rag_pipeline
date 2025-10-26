@@ -11,9 +11,6 @@ from groq import Groq
 load_dotenv()
 
 
-## i want to build a mutliagent , where one agent will get the latest news from net , second agents will summarize the new
-# and third agent will produce , blog or twitter or linkedin post content on it
-
 
 class State(TypedDict):
     messages: Annotated[list,add_messages]
@@ -24,7 +21,6 @@ search = DuckDuckGoSearchResults()
 def onlinesearch(state:State):
     query = state["messages"][-1].content
     online_output = search.invoke(query)
-    print(online_output)
     return {"messages":[online_output]}
 
 
@@ -36,7 +32,9 @@ client = Groq(
 
 def chatbot(state:State):
     SYSTEM_PROMPT = f"""
-    you are a world best twitter content writer . you will get the leatest news from the internet snd your goal is to convert that info into a creative , interesting tweet .
+    
+    you are a ai engineer and a world best twitter content writer . you will get the leatest news from the internet snd your goal is to convert that info into a creative , interesting tweet .
+    you have to create a tweet of around 100 words and it should be around your filed only.
 
 """
     response = client.chat.completions.create(
@@ -53,8 +51,6 @@ def chatbot(state:State):
     ],
     model="llama-3.3-70b-versatile",
 )
-    print(response.choices[0].message.content)
-
     return {"messages":[response.choices[0].message.content]}
 
 
@@ -73,9 +69,11 @@ graph = graph_builder.compile()
 
 
 def stream_graph_updates(user_input: str):
-    for event in graph.stream({"messages": [{"role": "user", "content": user_input}]}):
-        for value in event.values():
-            print("Assistant:", value["messages"][-1])
+    result = graph.invoke({"messages": [{"role": "user", "content": user_input}]})
+    
+   
+    final_message = result["messages"][-1]
+    print("Assistant:", final_message.content)
 
 
 # Chat loop
@@ -86,12 +84,9 @@ while True:
             print("Goodbye!")
             break
         stream_graph_updates(user_input)
-        print("It is working....")
-    except:
-        user_input = "What do you know about LangGraph?"
-        print("User: " + user_input)
-        stream_graph_updates(user_input)
-        break
+       
+    except Exception as e:
+        print(f"Error:{e}")
 
 
 
