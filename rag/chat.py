@@ -3,7 +3,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_qdrant import QdrantVectorStore
-import getpass
+import getpass 
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -19,7 +19,7 @@ embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-b
 # FIXED: Correct parameter order
 vector_db = QdrantVectorStore.from_existing_collection(
     embedding=embeddings,  
-    collection_name="my",  
+    collection_name="resume_collection",  
     url=qdrant_url,
     api_key=qdrant_api,
 )
@@ -50,7 +50,7 @@ Instructions:
 - Reference page numbers when applicable
 """
 
-# FIXED: Correct Gemini API configuration
+
 client = Groq(
     api_key=os.environ.get("GROQ_API_KEY"),
 )

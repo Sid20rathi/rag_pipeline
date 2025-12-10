@@ -14,7 +14,7 @@ qdrant_url = os.getenv("QDRANT_URL")
 qdrant_api = os.getenv("QDRANT_API_KEY")
 
 
-pdf_path  = Path(__file__).parent / "Tech Interview Preparation Checklist.pdf"
+pdf_path  = Path(__file__).parent / "Master_Resume.pdf"
 loader = PyPDFLoader(pdf_path)
 
 
@@ -38,7 +38,7 @@ qdrant = QdrantVectorStore.from_documents(
     embeddings,
     url=qdrant_url,
     api_key=qdrant_api,
-    collection_name="my",
+    collection_name="resume_collection",
    
 )
 

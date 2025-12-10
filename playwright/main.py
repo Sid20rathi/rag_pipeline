@@ -6,6 +6,7 @@ from langchain.chat_models import init_chat_model
 from langchain.tools import Tool
 import os
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 
@@ -37,7 +38,7 @@ for tool in original_tools:
     else:
         tools.append(tool)
 
-llm = init_chat_model("google_genai:gemini-2.0-flash", api_key=os.getenv("GOOGLE_API_KEY"))
+llm = init_chat_model("google_genai:gemini-2.5-flash", api_key=os.getenv("GOOGLE_API_KEY"))
 
 # Use standard prompt
 from langchain import hub
@@ -47,17 +48,21 @@ agent = create_react_agent(llm, tools, prompt)
 agent_executor = AgentExecutor(
     agent=agent, 
     tools=tools, 
-    verbose=True, 
     handle_parsing_errors=True,
     max_iterations=5
 )
-
+url = "https://www.anthropic.com/engineering"
 command = {
-    "input": "Go to https://www.linkedin.com/jobs/view/4308757084/?alternateChannel=search&eBP=BUDGET_EXHAUSTED_JOB&refId=3Sd%2FTcHkLYoT91IpXuCALg%3D%3D&trackingId=fneilSacTQvVjID0Qjx3%2FA%3D%3D and give me the job description in detail"
+    "input": f"Go to {url} and give me the job description in detail and about the company  of the person posted the job"
 }
 
 try:
+    start = time.time()
     result = agent_executor.invoke(command)
+    end = time.time()
+    print(f"Time taken: {end - start}")
+    print("-----"*50)
+    
     print(result)
 except Exception as e:
     print(f"Error: {e}")
