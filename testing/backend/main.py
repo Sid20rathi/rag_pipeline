@@ -126,7 +126,7 @@ async def send_email(request: Request):
         if not all([user_email, access_token, to_email, subject, body]):
             raise HTTPException(status_code=400, detail="Missing required fields")
         
-        # Create email message
+     
         import base64
         from email.mime.text import MIMEText
         
