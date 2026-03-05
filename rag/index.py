@@ -15,13 +15,13 @@ qdrant_api = os.getenv("QDRANT_API_KEY")
 
 
 pdf_path  = Path(__file__).parent / "Master_Resume.pdf"
+
+
+# loading the document
 loader = PyPDFLoader(pdf_path)
-
-
-
 docs = loader.load()
 
-
+# splitting into chunks
 text_splitter = RecursiveCharacterTextSplitter(
     chunk_size=100,
     chunk_overlap=20,
@@ -30,9 +30,9 @@ text_splitter = RecursiveCharacterTextSplitter(
 )
 texts = text_splitter.split_documents(docs)
 
-
+# creating embedding model
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
-
+#storing in  vector db
 qdrant = QdrantVectorStore.from_documents(
     texts,
     embeddings,
