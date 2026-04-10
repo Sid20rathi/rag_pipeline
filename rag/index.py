@@ -28,7 +28,7 @@ text_splitter = RecursiveCharacterTextSplitter(
     length_function=len,
     is_separator_regex=False,
 )
-texts = text_splitter.split_documents(docs)
+texts = text_splitter.split_documents(docs)                                                                                                                                                                                                                                                                                                                                                                                      
 
 # creating embedding model
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
